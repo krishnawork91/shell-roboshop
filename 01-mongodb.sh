@@ -2,7 +2,7 @@
 
 LOGS_FOLDER="/var/log/roboshop"
 sudo mkdir -p $LOGS_FOLDER 
-sudo chown _R ec2-user:ec2_user $LOGS_FOLDER
+sudo chown -R ec2-user:ec2_user $LOGS_FOLDER
 sudo chmod -R 755 $LOGS_FOLDER 
 LOGS_FILE="$LOGS_FOLDER/$0.log"
 
@@ -13,13 +13,13 @@ G="\e[32m"
 Y="\e[33m"
 N="\e[0m"
 
-if [ $USER_ID -ne 0]; then 
+if [ $USER_ID -ne 0 ]; then 
     echo -e "$TIME_STAMP [ERROR] $R Please run this script with root access $N" | tee -a $LOGS_FILE
     exit 1 
 fi 
 
 VALIDATE(){
-    if [$1 -ne 0 ]; then 
+    if [ $1 -ne 0 ]; then 
         echo -e "$TIME_STAMP [ERROR] $2.... $R FAILURE $N" | tee -a $LOGS_FILE
         exit 1 
     else 
