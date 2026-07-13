@@ -1,0 +1,36 @@
+#! /bin/bash
+
+AMI_ID="ami-0220d79f3f480ecf5"
+ZONE_ID="Z08176301ZXVUQZPW45S5"
+DOMAIN_NAME="daws90s.cloud"
+
+for instance in $@ 
+do 
+    echo "launching instance: $instance"
+    INSTANCE_ID=$(aws ec2 run-instances \
+        --image-id $AMI_ID \
+        --instance-type t3.micro \
+        --security-groups "roboshop-common" "roboshop-$instance"\
+        --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value="roboshop-$instance"}]' \
+        --query 'Instances[0].InstanceId' \
+        --output text
+    ) 
+    echo "Instance ID: $INSTANCE_ID"
+
+    if [ $instance == "frontend" ]; then 
+        IP=$(aws ec2 describe-instances \
+            --instance-ids $INSTANCE_ID \
+            --query "Reservations[0].Instances[0].PublicIpAddress" \
+            --output text
+            )
+        R53_RECORD="$DOMAIN_NAME"
+    else 
+        IP=$(aws ec2 describe-instances \
+            --instance-ids $INSTANCE_ID \
+            --query "Reservations[0].Instances[0].PrivateIpAddress" \
+            --output text
+            )
+        R53_RECORD="$instance.$DOMAIN_NAME"
+    fi 
+    
+done 
