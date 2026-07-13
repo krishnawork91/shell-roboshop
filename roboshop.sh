@@ -1,7 +1,7 @@
 #! /bin/bash
 
 AMI_ID="ami-0220d79f3f480ecf5"
-ZONE_ID="use1-az4"
+ZONE_ID="Z08176301ZXVUQZPW45S5"
 DOMAIN_NAME="daws90s.cloud"
 
 for instance in $@ 
@@ -10,7 +10,7 @@ do
     INSTANCE_ID=$(aws ec2 run-instances \
         --image-id $AMI_ID \
         --instance-type t3.micro \
-        --security-groups "roboshop-common" "roboshop-$instance"\
+        --security-groups "roboshop-common" "roboshop-$instance" \
         --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value="roboshop-$instance"}]" \
         --query 'Instances[0].InstanceId' \
         --output text
