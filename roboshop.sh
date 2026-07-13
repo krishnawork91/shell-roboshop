@@ -32,6 +32,7 @@ do
             )
         R53_RECORD="$instance.$DOMAIN_NAME"
     fi 
+    echo "$IP" 
     
     #### Updating R53 Record #### 
     aws route53 change-resource-record-sets \
