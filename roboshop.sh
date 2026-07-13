@@ -33,4 +33,28 @@ do
         R53_RECORD="$instance.$DOMAIN_NAME"
     fi 
     
+    #### Updating R53 Record #### 
+    aws route53 change-resource-record-sets \
+    --hosted-zone-id $ZONE_ID \
+    --change-batch '
+        {
+            "Comment": "Updating A record to new IP",
+            "Changes": [
+                {
+                    "Action": "UPSERT",
+                    "ResourceRecordSet": {
+                        "Name": "$R53_RECORD",
+                        "Type": "A",
+                        "TTL": 1,
+                        "ResourceRecords": [
+                            {
+                            "Value": "$IP"
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    '  
+
 done 
