@@ -1,7 +1,7 @@
 #! /bin/bash
 
 AMI_ID="ami-0220d79f3f480ecf5"
-ZONE_ID="Z08176301ZXVUQZPW45S5"
+ZONE_ID="use1-az4"
 DOMAIN_NAME="daws90s.cloud"
 
 for instance in $@ 
