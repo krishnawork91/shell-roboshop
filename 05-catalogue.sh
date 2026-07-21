@@ -68,3 +68,16 @@ VALIDATE $? "Added Mongo repo"
 dnf install mongodb-mongosh -y &>> LOGS_FILE
 VALIDATE $? "Installed Mongodb client"
 
+INDEX=$(mongosh --host mongodb.daws90s.cloud --eval 'db.getMongo().getDBNames().indexOf("catalogue")')
+
+if [ $INDEX -lt 0]; then 
+   mongo  --host mongodb.daws90s.cloud < /app/db/master-data.js 
+   VALIDATE $? "Load Products"
+else 
+   echo -e "Products already loaded...$Y SKIPPING $N" 
+fi
+
+systemctl enable catalogue &>> LOGS_FILE
+systemctl restart catalogue &>> LOGS_FILE
+VALIDATE $? "Restarting catalogue"
+   
