@@ -39,7 +39,7 @@ if [ $? -ne 0 ]; then
     useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
     VALIDATE $? "Creating roboshop system user" 
 else 
-    echo "System user roboshop already created...$Y SKIPPING $N" 
+    echo -e "System user roboshop already created...$Y SKIPPING $N" 
 fi 
 
 rm -rf /app 
@@ -65,6 +65,6 @@ VALIDATE $? "Created systemctl service"
 cp $SCRIPT_DIR/mongo.repo /etc/yum.repos.d/mongo.repo
 VALIDATE $? "Added Mongo repo"
 
-dnf install mongodb-mongosh -y 
+dnf install mongodb-mongosh -y &>> LOGS_FILE
 VALIDATE $? "Installed Mongodb client"
 
